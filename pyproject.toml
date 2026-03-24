@@ -26,3 +26,17 @@ format.preview = true
 format.quote-style = "single"
 lint.select = ["E", "F", "I", "PL", "PT", "W"]
 lint.preview = true
+
+[tool.pytest.ini_options]
+pythonpath = "."
+addopts = '-p no:warnings'
+
+[tool.taskipy.tasks]
+pre_lint = 'typos'
+lint = 'ruff check'
+pre_format = 'ruff check --fix'
+format = 'ruff format'
+run = 'fastapi dev fast_zero/app.py'
+pre_test = 'task lint'
+test = 'pytest -s -x --cov=fast_zero -vv'
+post_test = 'coverage html'
